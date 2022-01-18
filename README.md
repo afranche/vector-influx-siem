@@ -1,6 +1,7 @@
-# Vector & Influx as a SIEM
+# Vector & Influx as a "SIEM"
 
-Trying vector.dev and InfluxDB to test both as alternative to usual ELK stacks for SIEM usage.
+Trying vector.dev and InfluxDB to test both as alternative to usual ELK stacks for SIEM usage (right
+now it just constitutes a logging stack though).
 
 Nothing too fancy, it barely works. I discovered [vector.dev](https://vector.dev) a few weeks
 ago but I didn't get more information until now I found the time for it. I like Datadog so I
