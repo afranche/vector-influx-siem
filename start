@@ -1,0 +1,10 @@
+#! /usr/bin/env bash
+
+docker-compose up -d influxdb
+sleep 4
+
+docker-compose up -d aggregator
+sleep 4
+
+docker-compose up -d agent
+echo -e "----\n  🚀 Ensure agent and aggregator didn't run into issues.\n----\n"
