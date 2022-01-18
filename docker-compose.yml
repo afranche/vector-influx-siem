@@ -1,8 +1,40 @@
 version: "3.9"
 services:
-  dashboard:
-    image: grafana/grafana-oss:latest
-  database:
-    image: quay.io/influxdb/influxdb:2.1.1
+  influxdb:
+    image: influxdb:latest
+    expose:
+    - "8086"
+    ports:
+    - "8086:8086"
+    env_file:
+      - influx.env
+    networks:
+    - vector-stack
   aggregator:
     image: timberio/vector:latest-alpine
+    expose:
+    - "9000"
+    volumes:
+    - type: bind
+      source: ./config/vector/aggregator.toml
+      target: /opt/aggregator.toml
+    command: "--config /opt/aggregator.toml"
+    env_file:
+      - aggregator.env
+    depends_on:
+    - influxdb
+    networks:
+    - vector-stack
+  agent:
+    image: timberio/vector:latest-alpine
+    volumes:
+    - type: bind
+      source: ./config/vector/agent.toml
+      target: /opt/agent.toml
+    command: "--config /opt/agent.toml"
+    depends_on:
+    - aggregator
+    networks:
+    - vector-stack
+networks:
+  vector-stack:

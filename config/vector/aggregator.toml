@@ -1,0 +1,17 @@
+[sources.agent]
+type = "vector"
+address = "0.0.0.0:9000"
+version = "1"
+
+[sources.aggregator_logs]
+type = "internal_logs"
+
+[sinks.influxdb]
+type = "influxdb_logs"
+inputs = [ "agent", "aggregator_logs" ]
+bucket = "${INFLUXDB_BUCKET}"
+endpoint = "http://influxdb:8086/"
+org = "${INFLUXDB_ORG}"
+token = "${INFLUXDB_TOKEN}"
+measurement = "vector-logs"
+namespace = "service"

@@ -1,0 +1,16 @@
+[sources.http_logs]
+type = "demo_logs"
+format = "json"
+
+[sources.syslog_logs]
+type = "demo_logs"
+format = "syslog"
+
+[sources.agent_logs]
+type = "internal_logs"
+
+[sinks.aggregator]
+type = "vector"
+inputs = [ "http_logs", "syslog_logs", "agent_logs" ]
+address = "aggregator:9000"
+version = "1"
