@@ -1,0 +1,8 @@
+version: "3.9"
+services:
+  dashboard:
+    image: grafana/grafana-oss:latest
+  database:
+    image: quay.io/influxdb/influxdb:2.1.1
+  aggregator:
+    image: timberio/vector:latest-alpine
