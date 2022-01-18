@@ -3,6 +3,9 @@
 docker-compose up -d influxdb
 sleep 4
 
+docker-compose up -d dashboard
+sleep 4
+
 docker-compose up -d aggregator
 sleep 4
 

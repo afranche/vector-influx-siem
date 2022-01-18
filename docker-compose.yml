@@ -3,38 +3,50 @@ services:
   influxdb:
     image: influxdb:latest
     expose:
-    - "8086"
+      - "8086"
     ports:
-    - "8086:8086"
+      - "8086:8086"
     env_file:
       - influx.env
     networks:
-    - vector-stack
+      - vector-stack
+  dashboard:
+    image: grafana/grafana-oss:latest
+    ports:
+      - "3000:3000"
+    volumes:
+      - type: bind
+        source: ./config/grafana/provisioning
+        target: /opt/provisioning
+    depends_on:
+      - influxdb
+    env_file:
+      - grafana.env
+    networks:
+      - vector-stack
   aggregator:
     image: timberio/vector:latest-alpine
     expose:
-    - "9000"
+      - "9000"
     volumes:
-    - type: bind
-      source: ./config/vector/aggregator.toml
-      target: /opt/aggregator.toml
+      - type: bind
+        source: ./config/vector/aggregator.toml
+        target: /opt/aggregator.toml
     command: "--config /opt/aggregator.toml"
     env_file:
       - aggregator.env
-    depends_on:
-    - influxdb
     networks:
-    - vector-stack
+      - vector-stack
   agent:
     image: timberio/vector:latest-alpine
     volumes:
-    - type: bind
-      source: ./config/vector/agent.toml
-      target: /opt/agent.toml
+      - type: bind
+        source: ./config/vector/agent.toml
+        target: /opt/agent.toml
     command: "--config /opt/agent.toml"
     depends_on:
-    - aggregator
+      - aggregator
     networks:
-    - vector-stack
+      - vector-stack
 networks:
   vector-stack:
